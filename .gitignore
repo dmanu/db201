@@ -1,0 +1,24 @@
+# Ignore data and generated files
+data/
+dataz/
+mongodb-northwind/
+bak/
+# macOS system files
+.DS_Store
+
+# Node, Python, and other common environment files
+node_modules/
+.env
+*.pyc
+__pycache__/
+
+# VSCode and editor folders
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# OS/backup files
+*.bak
+*~ 

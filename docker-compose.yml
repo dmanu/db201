@@ -1,0 +1,57 @@
+services:
+  postgresql_db:
+    image: postgres:16
+    container_name: postgresql_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: northwind
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./data/postgres:/dataset:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d northwind"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb_container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+      - ./data/mongo:/dataset:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ping: 1})"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  neo4j:
+    image: neo4j:5-community
+    container_name: neo4j_container
+    environment:
+      NEO4J_AUTH: neo4j/password
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_server_directories_import: /var/lib/neo4j/import
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4jdata:/data
+      - ./data/neo4j:/var/lib/neo4j/import
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "password", "RETURN 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  mongodata:
+  neo4jdata:
