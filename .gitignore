@@ -1,7 +1,5 @@
 # Ignore data and generated files
 data/
-dataz/
-mongodb-northwind/
 bak/
 # macOS system files
 .DS_Store
